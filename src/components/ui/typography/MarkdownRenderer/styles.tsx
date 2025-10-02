@@ -180,22 +180,26 @@ const Img = ({ src, alt }: ImgProps) => {
 
   if (!src) return null
 
+  const imageSrc = src instanceof Blob ? URL.createObjectURL(src) : src
+
   return (
     <div className="w-full max-w-xl">
       {error ? (
         <div className="flex h-40 flex-col items-center justify-center gap-2 rounded-md bg-secondary/50 text-muted">
           <Paragraph className="text-primary">Image unavailable</Paragraph>
-          <Link
-            href={src}
-            target="_blank"
-            className="max-w-md truncate underline"
-          >
-            {src}
-          </Link>
+          {typeof src === 'string' && (
+            <Link
+              href={src}
+              target="_blank"
+              className="max-w-md truncate underline"
+            >
+              {src}
+            </Link>
+          )}
         </div>
       ) : (
         <Image
-          src={src}
+          src={imageSrc}
           width={1280}
           height={720}
           alt={alt ?? 'Rendered image'}
